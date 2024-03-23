@@ -18,6 +18,6 @@ volumes:
         driver: local
 
   # deamon/background mode
-  # docker compose -f ./docker-compose.yaml up -d
+  # docker compose -f ./dockercompose.yaml up -d
   # docker compose -f ./docker-compose.yaml down
   # docker compose up -d

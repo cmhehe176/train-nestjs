@@ -11,58 +11,57 @@ export class AuthService {
 		private prisma: PrismaService,
 		private jwt:JwtService
 		){}
-	register = async(Data : RegisterDTO): Promise<User> =>{
-		//1.check email
-		const user = await this.prisma.user.findUnique({
-			where :{
-				email: Data.email
-			}
-		})
-		if(user){
-			throw new HttpException({message:'da co email'},HttpStatus.BAD_REQUEST)
-		}else{
-			//2.dangky
-			const hashpassword = await hash(Data.password,10)
-			  var res = await this.prisma.user.create({
-				data:{...Data,password:hashpassword}
-			})
-			return res
-		}
-		
-	}
-	login = async(Data: LoginDTO): Promise<User> =>{
-			//1 check user in db 
+		register = async(Data :RegisterDTO): Promise<User> =>{
+
 			const user = await this.prisma.user.findUnique({
-				where:{
+				where :{
 					email: Data.email
 				}
 			})
-			if( !user){
-				throw new HttpException({message: 'tai khoan ko ton tai'},HttpStatus.UNAUTHORIZED)
+			if(user){
+				throw new HttpException({message:'da co email'},HttpStatus.BAD_REQUEST)
+			}else{
+				const hashpassword = await hash(Data.password,10)
+				  var res = await this.prisma.user.create({
+					data:{...Data,password:hashpassword}
+				})
+				return res
 			}
-			//2 check pass
-			const verify = await compare(Data.password,user.password)
-			if(!verify){
-				throw new HttpException({message: 'mat khau sai '},HttpStatus.UNAUTHORIZED)
-			}
-			//3tao access token vaf refresh token 
-			const payload = { 
-				id:user.id,
-				name:user.name,
-				email: user.email
-			}
-			const accesstoken = await this.jwt.signAsync(payload,{
-				secret: process.env.ACCESS_TOKEN_KEY,
-				expiresIn:'2h'
-			})
-			const refreshtoken = await this.jwt.signAsync(payload,{
-				secret: process.env.REFRESH_TOKEN_KEY,
-				expiresIn:'2d'
-			})
-			return {
-				accesstoken,
-				refreshtoken
-			}	
-	}
+	
+		}
+	// login = async(Data: LoginDTO): Promise<any> =>{
+	// 		//1 check user in db 
+	// 		const user = await this.prisma.user.findUnique({
+	// 			where:{
+	// 				email: Data.email
+	// 			}
+	// 		})
+	// 		if( !user){
+	// 			throw new HttpException({message: 'tai khoan ko ton tai'},HttpStatus.UNAUTHORIZED)
+	// 		}
+	// 		//2 check pass
+	// 		const verify = await compare(Data.password,user.password)
+	// 		if(!verify){
+	// 			throw new HttpException({message: 'mat khau sai '},HttpStatus.UNAUTHORIZED)
+	// 		}
+	// 		//3tao access token vaf refresh token 
+	// 		const payload = { 
+	// 			id:user.id,
+	// 			name:user.name,
+	// 			email: user.email
+	// 		}
+	// 		const accesstoken = await this.jwt.signAsync(payload,{
+	// 			secret: process.env.ACCESS_TOKEN_KEY,
+	// 			expiresIn:'2h'
+	// 		})
+	// 		const refreshtoken = await this.jwt.signAsync(payload,{
+	// 			secret: process.env.REFRESH_TOKEN_KEY,
+	// 			expiresIn:'2d'
+	// 		})
+	// 		return {
+	// 			accesstoken,
+	// 			refreshtoken
+	// 		}	
+	// }
 	
 }
