@@ -5,6 +5,6 @@ export class RegisterDTO{
 	password: string
 }
 export class LoginDTO{
-	email:string
-	password:string
+	emai:string
+	password: string
 }
