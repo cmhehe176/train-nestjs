@@ -3,7 +3,7 @@ version: '3.8'
 services:
     postgres_db:
         image: postgres:13.5
-        container_name: crud
+        container_name: ndmc-nestjs
         restart: always
         environment:
             - POSTGRES_USER=ndmc
@@ -17,7 +17,7 @@ volumes:
     postgres_db:
         driver: local
 
-  # deamon/background mode
+  
   # docker compose -f ./dockercompose.yaml up -d
-  # docker compose -f ./docker-compose.yaml down
+  # docker compose -f ./dockercompose.yaml down
   # docker compose up -d

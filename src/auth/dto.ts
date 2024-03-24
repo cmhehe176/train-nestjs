@@ -1,3 +1,4 @@
+
 export class RegisterDTO{
 	name: string
 	email: string
@@ -5,6 +6,6 @@ export class RegisterDTO{
 	password: string
 }
 export class LoginDTO{
-	emai:string
+	email:string
 	password: string
 }

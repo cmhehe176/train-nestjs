@@ -9,4 +9,3 @@ import { JwtService } from '@nestjs/jwt';
   providers: [AuthService,PrismaService,JwtService]
 })
 export class AuthModule {}
-
