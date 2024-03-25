@@ -12,37 +12,44 @@ export class AuthService {
 		private prisma: PrismaService,
 		private jwt:JwtService
 		){}
+		// ở đây promise có nhiệm vụ giúp đảm bảo rằng register sẽ không trả về kết quả 
+		// cho đến khi tất cả các tác vụ bất đồng bộ được hoàn tất 
+		// và sau đó sẽ trả về kết quả là user trong Promise<user>
 		register = async(Data: RegisterDTO): Promise<User> =>{
 			const user = await this.prisma.user.findUnique({
 				where : {
 					email: Data.email 
 				}
 			})
+			//dùng throw thì nếu đúng thì sẽ out đoạn mã đang chạy 
+			//ví dụ ở đây là dùng throw thì sẽ cancel tất cả đoạn mã ở sau if(){ throw }
+			//=> Email đã tồn tại 
+			//=> công dụng trong th này là để truyền lỗi ra bên ngoài 
 			if(user){
-				throw new HttpException({message:'da co email'},HttpStatus.BAD_REQUEST)
+				throw new HttpException({message:'Email đã tồn tại'},HttpStatus.BAD_REQUEST)
 			}
 			const hashpassword = await hash(Data.password,10)
 			const res = await this.prisma.user.create({
 			  data:{...Data,password:hashpassword}
 		  })
-		  return res
+		  	return res
 		}
 		login = async(Data: LoginDTO): Promise<any> =>{
-			//1 check user in db 
+			//1.check user in db nếu đã tồn tại => error
 			const user = await this.prisma.user.findUnique({
 				where:{
 					email: Data.email
 				}
 			})
 			if( !user){
-				throw new HttpException({message: 'tai khoan ko ton tai'},HttpStatus.UNAUTHORIZED)
+				throw new HttpException({message: 'Tài khoản không tồn tại'},HttpStatus.UNAUTHORIZED)
 			}
-			//2 check pass
+			//2. check pass
 			const verify = await compare(Data.password,user.password)
 			if(!verify){
-				throw new HttpException({message: 'mat khau sai '},HttpStatus.UNAUTHORIZED)
+				throw new HttpException({message: 'Sai mật khẩu '},HttpStatus.UNAUTHORIZED)
 			}
-			//3tao access token vaf refresh token 
+			//3.tao accesstoken và refreshtoken sau đó return lên client để store
 			const payload = { 
 				id:user.id,
 				name:user.name,
