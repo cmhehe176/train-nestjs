@@ -27,7 +27,7 @@ export class AuthService {
 		  })
 		  return res
 		}
-	login = async(Data: LoginDTO): Promise<any> =>{
+		login = async(Data: LoginDTO): Promise<any> =>{
 			//1 check user in db 
 			const user = await this.prisma.user.findUnique({
 				where:{
