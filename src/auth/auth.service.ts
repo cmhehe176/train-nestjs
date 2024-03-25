@@ -1,18 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { LoginDTO, RegisterDTO} from './dto';
-import { User } from '@prisma/client';
 import { hash ,compare } from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 @Injectable()
 export class AuthService {
+
 	//contructor : để thêm các service để xài
 	constructor( 
 		private prisma: PrismaService,
 		private jwt:JwtService
 		){}
 		register = async(Data: RegisterDTO): Promise<User> =>{
-
 			const user = await this.prisma.user.findUnique({
 				where : {
 					email: Data.email 
@@ -20,13 +20,12 @@ export class AuthService {
 			})
 			if(user){
 				throw new HttpException({message:'da co email'},HttpStatus.BAD_REQUEST)
-			}else{
-				const hashpassword = await hash(Data.password,10)
-				  var res = await this.prisma.user.create({
-					data:{...Data,password:hashpassword}
-				})
-				return res
 			}
+			const hashpassword = await hash(Data.password,10)
+			const res = await this.prisma.user.create({
+			  data:{...Data,password:hashpassword}
+		  })
+		  return res
 		}
 	login = async(Data: LoginDTO): Promise<any> =>{
 			//1 check user in db 
