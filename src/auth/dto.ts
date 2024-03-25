@@ -6,8 +6,7 @@ export class RegisterDTO{
 
 	@IsString()
 	@IsNotEmpty()
-	email: string
-
+	email: string 
 	@IsString()
 	address: string
 
@@ -18,7 +17,7 @@ export class LoginDTO{
 	@IsString()
 	@IsNotEmpty()
 	email:string
-	
+
 	@IsString()
 	password: string
 }
