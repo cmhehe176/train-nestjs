@@ -14,14 +14,15 @@ export class AuthService {
 		){}
 		// ở đây promise có nhiệm vụ giúp đảm bảo rằng register sẽ không trả về kết quả 
 		// cho đến khi tất cả các tác vụ bất đồng bộ được hoàn tất 
-		// và sau đó sẽ trả về kết quả là user trong Promise<user>
+		// và sau đó sẽ trả về kết quả là user trong Promise<user> 
+		// đây là kiểu khai báo ở trong nestjs thôi , làm quen dần thôi 
+
 		register = async(Data: RegisterDTO): Promise<User> =>{
 			const user = await this.prisma.user.findUnique({
 				where : {
 					email: Data.email 
 				}
 			})
-			
 			if(user){
 				throw new HttpException({message:'Email đã tồn tại'},HttpStatus.BAD_REQUEST)
 			}
@@ -32,7 +33,7 @@ export class AuthService {
 		  	return res
 		}
 
-		//dùng throw thì nếu đúng thì sẽ out đoạn mã đang chạy 
+			//dùng throw thì nếu đúng thì sẽ out đoạn mã đang chạy 
 			//ví dụ ở đây là dùng throw thì sẽ cancel tất cả đoạn mã ở sau if(){ throw }
 			//=> Email đã tồn tại 
 			//=> công dụng trong th này là để truyền lỗi ra bên ngoài 
@@ -59,24 +60,15 @@ export class AuthService {
 			}
 			const accesstoken = await this.jwt.signAsync(payload,{
 				secret: process.env.ACCESS_TOKEN_KEY,
-				expiresIn:'2h'
+				expiresIn:process.env.ACCESS_TOKEN_KEY_EXPRIRE
 			})
 			const refreshtoken = await this.jwt.signAsync(payload,{
 				secret: process.env.REFRESH_TOKEN_KEY,
-				expiresIn:'2d'
+				expiresIn:process.env.REFRESH_TOKEN_KEY_EXPRIRE
 			})
 			return {
 				accesstoken,
 				refreshtoken
 			}	
 	}
-	
-		getuser = async (Data : RegisterDTO):Promise<User>=>{
-			const user = await this.prisma.user.findUnique({
-				where : {
-					email: Data.email 
-				}
-			})
-			return user
-		}
 }
