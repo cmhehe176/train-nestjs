@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { LoginDTO, RegisterDTO} from './dto';
 import { hash ,compare } from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
+// import { User } from '@prisma/client';
 @Injectable()
 export class AuthService {
 
@@ -15,7 +15,7 @@ export class AuthService {
 		// ở đây promise có nhiệm vụ giúp đảm bảo rằng register sẽ không trả về kết quả 
 		// cho đến khi tất cả các tác vụ bất đồng bộ được hoàn tất 
 		// và sau đó sẽ trả về kết quả là user trong Promise<user>
-		register = async(Data: RegisterDTO): Promise<User> =>{
+		register = async(Data: RegisterDTO): Promise<any> =>{
 			const user = await this.prisma.user.findUnique({
 				where : {
 					email: Data.email 

@@ -1,13 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDTO, RegisterDTO } from './dto';
-import { User } from '@prisma/client';
+// import { User } from '@prisma/client';
 
 @Controller('auth')
 export class AuthController {
 	constructor(private authService: AuthService){}
 	@Post('register')
-	register(@Body() body : RegisterDTO):Promise<User>{
+	register(@Body() body : RegisterDTO):Promise<any>{
 		return this.authService.register(body)
 	}
 	@Post('login')
