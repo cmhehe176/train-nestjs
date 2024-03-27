@@ -8,6 +8,7 @@ import { User } from '@prisma/client';
 export class AuthService {
 
 	//contructor : để thêm các service để xài
+	//nhớ phải decorator Injectable để có thể xài ở 1 nơi khác trong phạm vi của module
 	constructor( 
 		private prisma: PrismaService,
 		private jwt:JwtService
@@ -36,7 +37,7 @@ export class AuthService {
 			//dùng throw thì nếu đúng thì sẽ out đoạn mã đang chạy 
 			//ví dụ ở đây là dùng throw thì sẽ cancel tất cả đoạn mã ở sau if(){ throw }
 			//=> Email đã tồn tại 
-			//=> công dụng trong th này là để truyền lỗi ra bên ngoài 
+			//=> công dụng trong th này là để truyền lỗi ra bên ngoài ( giống hệt break )
 		login = async(Data: LoginDTO): Promise<any> =>{
 			//1.check user in db nếu đã tồn tại => error
 			const user = await this.prisma.user.findUnique({
