@@ -1,15 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-<<<<<<< HEAD
-let port = process.env.PORT || 3001
-=======
 const port = process.env.PORT
->>>>>>> authorization
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(port,()=>{
-    console.log('localhost:'+port)
+    console.log('127.0.0.1:'+port)
   });
 }
 bootstrap();
