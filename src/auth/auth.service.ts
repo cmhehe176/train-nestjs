@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { LoginDTO, RegisterDTO} from './dto';
+import { LoginDTO, RegisterDTO} from './dto/auth.dto';
 import { hash ,compare } from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
@@ -21,10 +21,7 @@ export class AuthService {
 					email: Data.email 
 				}
 			})
-			//dùng throw thì nếu đúng thì sẽ out đoạn mã đang chạy 
-			//ví dụ ở đây là dùng throw thì sẽ cancel tất cả đoạn mã ở sau if(){ throw }
-			//=> Email đã tồn tại 
-			//=> công dụng trong th này là để truyền lỗi ra bên ngoài 
+			
 			if(user){
 				throw new HttpException({message:'Email đã tồn tại'},HttpStatus.BAD_REQUEST)
 			}
@@ -34,6 +31,11 @@ export class AuthService {
 		  })
 		  	return res
 		}
+
+		//dùng throw thì nếu đúng thì sẽ out đoạn mã đang chạy 
+			//ví dụ ở đây là dùng throw thì sẽ cancel tất cả đoạn mã ở sau if(){ throw }
+			//=> Email đã tồn tại 
+			//=> công dụng trong th này là để truyền lỗi ra bên ngoài 
 		login = async(Data: LoginDTO): Promise<any> =>{
 			//1.check user in db nếu đã tồn tại => error
 			const user = await this.prisma.user.findUnique({
@@ -41,7 +43,7 @@ export class AuthService {
 					email: Data.email
 				}
 			})
-			if( !user){
+			if(!user){
 				throw new HttpException({message: 'Tài khoản không tồn tại'},HttpStatus.UNAUTHORIZED)
 			}
 			//2. check pass
@@ -49,7 +51,7 @@ export class AuthService {
 			if(!verify){
 				throw new HttpException({message: 'Sai mật khẩu '},HttpStatus.UNAUTHORIZED)
 			}
-			//3.tao accesstoken và refreshtoken sau đó return lên client để store
+			//3.tao accesstoken và refreshtoken sau đó return về client để store
 			const payload = { 
 				id:user.id,
 				name:user.name,
@@ -69,4 +71,12 @@ export class AuthService {
 			}	
 	}
 	
+		getuser = async (Data : RegisterDTO):Promise<User>=>{
+			const user = await this.prisma.user.findUnique({
+				where : {
+					email: Data.email 
+				}
+			})
+			return user
+		}
 }
