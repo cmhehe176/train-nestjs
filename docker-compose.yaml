@@ -1,22 +1,25 @@
-version: '3.3'
-service:
-  mysql:
-    image: mysql:8.1.0
-    environment: 
-      MYSQL_DATABASE: 'database'
-      MYSQL_USER: 'ndmc'
-      MYSQL_PASSWORD: '1234'
-      MYSQL_ROOT_PASSWORD: '1234'
-    port:
-      -"3307:3306"
-    networks: 
-      - connect
-  adminer:
-    image: adminer:4
-    port:
-      - "8081:8080"
-    networks: 
-      - connect
-networks:
-  connect:
+version: '3.8'
+services:
+    postgres_db:
+        image: postgres:13.5
+        container_name: ndmc-nestjs
+        restart: always
+        environment:
+            - POSTGRES_USER=ndmc
+            - POSTGRES_PASSWORD=1234
+            - POSTGRES_DB=ndmc_db
+        volumes:
+            - postgres_db:/var/lib/postgresql/data
+        ports:
+            - '5432:5432'
+    # adminer:
+    #     image: adminer
+    #     restart: always
+volumes:
+    postgres_db:
+        driver: local
+
   
+  # docker compose -f ./docker-compose.yaml up -d
+  # docker compose -f ./docker-compose.yaml down
+  # docker compose up -d
