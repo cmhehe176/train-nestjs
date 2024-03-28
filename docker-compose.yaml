@@ -20,6 +20,6 @@ volumes:
         driver: local
 
   
-  # docker compose -f ./dockercompose.yaml up -d
-  # docker compose -f ./dockercompose.yaml down
+  # docker compose -f ./docker-compose.yaml up -d
+  # docker compose -f ./docker-compose.yaml down
   # docker compose up -d

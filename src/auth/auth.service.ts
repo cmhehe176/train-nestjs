@@ -17,7 +17,6 @@ export class AuthService {
 		// cho đến khi tất cả các tác vụ bất đồng bộ được hoàn tất 
 		// và sau đó sẽ trả về kết quả là user trong Promise<user> 
 		// đây là kiểu khai báo ở trong nestjs thôi , làm quen dần thôi 
-
 		register = async(Data: RegisterDTO): Promise<User> =>{
 			const user = await this.prisma.user.findUnique({
 				where : {
@@ -33,7 +32,6 @@ export class AuthService {
 		  })
 		  	return res
 		}
-
 			//dùng throw thì nếu đúng thì sẽ out đoạn mã đang chạy 
 			//ví dụ ở đây là dùng throw thì sẽ cancel tất cả đoạn mã ở sau if(){ throw }
 			//=> Email đã tồn tại 
