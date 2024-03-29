@@ -23,3 +23,11 @@ export class LoginDTO{
 	@IsString()
 	password: string
 }
+export class Guard{
+	@IsString()
+	@IsNotEmpty()
+	email:string
+
+	@IsString()
+	role:string
+}

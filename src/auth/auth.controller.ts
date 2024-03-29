@@ -11,7 +11,7 @@ export class AuthController {
 	register(@Body() body : RegisterDTO):Promise<User>{
 		return this.authService.register(body)
 	}
-	//@UseGuards(AuthenGuard)
+	
 	@Post('login')
 	login(@Body() body: LoginDTO):Promise<any>{
 		return this.authService.login(body)
