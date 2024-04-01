@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { APP_GUARD } from '@nestjs/core';
-import { Student } from './auth/role/role.student.guard';
+import { UserModule } from './module/user/user.module';
 import { PrismaService } from './prisma.service';
 
 @Module({

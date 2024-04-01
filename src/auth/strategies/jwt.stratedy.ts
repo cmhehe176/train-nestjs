@@ -28,12 +28,14 @@ export class jwtStrategy extends PassportStrategy(Strategy,'jwt') {
 		delete user.password
         return user
     }
+
 	//code toàn bug khó chịu vcl 
 
 	// validate(payload : any){
-	// 	return payload
+	// 	console.log('jwt', )
+	// 	return 'ndmc dt'
 	// }
-	
+
 }
 //có thể sử dụng config.service để mà lấy data ở env , nhưng mà với mô hình bé thì không cần 
 // dùng config thì sẽ bảo mật hơn 

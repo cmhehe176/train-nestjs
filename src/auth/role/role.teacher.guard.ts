@@ -6,7 +6,6 @@ export class Teacher implements CanActivate {
   constructor( private  prisma :PrismaService){}
   canActivate = async( context: ExecutionContext): Promise<boolean> => {
     const { user } = context.switchToHttp().getRequest();
-   console.log('role',user)
     const user_db = await this.prisma.user.findUnique({
       where: {
           email: user.email
