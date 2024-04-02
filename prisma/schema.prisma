@@ -6,7 +6,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
+// mô hình nhỏ nên gộp lại cho dễ query, mô hình lớn thì nên  tách ra làm 3 bảng : student, teacher và role , rồi include lại rồi mới query ,  thế thì nó sẽ đảm bảo tính mở rộng ,hiệu năng và tính bảo mật 
 model User {
   id       Int    @id @default(autoincrement())
   name     String
@@ -14,5 +14,22 @@ model User {
   password String
   address  String
   role     String
+  subject  Subject[]
+  class     Class   @relation(fields: [classID], references: [id])
+  classID  Int
 }
 
+model Subject {
+  id        Int     @id @default(autoincrement())
+  name      String
+  subject   User    @relation(fields: [userID], references: [id])
+  userID    Int
+  class     Class   @relation(fields: [classID],references: [id])
+  classID   Int     @unique
+}
+model Class {
+  id        Int     @id @default(autoincrement())
+  name      String
+  user      User[]   
+  subject   Subject?
+}

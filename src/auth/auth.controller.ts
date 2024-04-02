@@ -12,6 +12,7 @@ export class AuthController {
 	}
 	@Post('login')
 	login(@Body() body: LoginDTO):Promise<any>{
+		console.log( body)
 		return this.authService.login(body)
 	}
 }

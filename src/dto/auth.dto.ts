@@ -14,6 +14,12 @@ export class RegisterDTO{
 	password: string
 	@IsString()
 	role: string
+	@IsString()
+	subject: object
+	
+	class: number
+
+	classId: number
 }
 export class LoginDTO{
 	@IsString()
